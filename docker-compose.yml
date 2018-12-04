@@ -1,0 +1,33 @@
+version: '3'
+services:
+  guacamole:
+    build: .
+    container_name: "guacamole"
+    ports:
+     - "8081:8080"
+    environment:
+      GUACD_HOSTNAME: "guacd"
+      MYSQL_HOSTNAME: "guacamole-mysql"
+      TOMCATUSERNAME: $TOMCATUSERNAME
+      TOMCATPASSWORD: $TOMCATPASSWORD
+      MYSQL_DATABASE: "guacamole_db"
+      MYSQL_USER: $GUACAMOLEUSER
+      MYSQL_PASSWORD: $GUACAMOLEPASSWORD
+    links:
+     - guacd
+     - guacamole-mysql
+  guacamole-mysql:
+    image: "mysql/mysql-server:5.7"
+    container_name: guacamole-mysql
+    volumes:
+     - ./guac_db:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_DATABASE: "guacamole_db"
+      MYSQL_USER: $GUACAMOLEUSER
+      MYSQL_PASSWORD: $GUACAMOLEPASSWORD
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      GUACADMINPASSWORD: $GUACADMINPASSWORD
+  guacd:
+    image: "guacamole/guacd:0.9.14"
+    container_name: "guacd"
+
