@@ -13,6 +13,7 @@ services:
       MYSQL_DATABASE: "guacamole_db"
       MYSQL_USER: $GUACAMOLEUSER
       MYSQL_PASSWORD: $GUACAMOLEPASSWORD
+      JWT_SECRET: $JWT_SECRET
     links:
      - guacd
      - guacamole-mysql
